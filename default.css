@@ -1,0 +1,531 @@
+/* 设置页面基本样式 */
+body {
+    margin: 0; /* 去除默认边距 */
+    background-color: #EEEEEE; /* 设置背景颜色 */
+}
+
+/* 横幅样式 */
+.banner {
+    padding-top: 10px; /* 上内边距 */
+    height: 26px; /* 高度 */
+    background-color: #EEEEEE; /* 背景颜色 */
+    align-items: center; /* 垂直居中对齐 */
+}
+
+/* 横幅容器样式 */
+.bannerBox {
+    width: 980px; /* 宽度 */
+    margin: auto; /* 自动水平居中 */
+}
+
+/* 电话标题样式 */
+.phoneTitle {
+    display: inline-block; /* 行内块元素 */
+    font-size: 12px; /* 字体大小 */
+    color: #65615F; /* 字体颜色 */
+}
+
+/* 电话号码样式 */
+.phone {
+    display: inline-block; /* 行内块元素 */
+    font-size: 12px; /* 字体大小 */
+    color: #EF0A48; /* 字体颜色 */
+}
+
+/* 按钮样式 */
+.Btn {
+    float: right; /* 右浮动 */
+}
+
+/* 登录按钮样式 */
+.login {
+    font-size: 14px; /* 字体大小 */
+    color: #65615F; /* 字体颜色 */
+    background-color: white; /* 背景颜色 */
+    border: 1px solid #CBCBCB; /* 边框 */
+    margin-right: 3px; /* 右边距 */
+}
+
+/* 注册按钮样式 */
+.register {
+    font-size: 14px; /* 字体大小 */
+    color: white; /* 字体颜色 */
+    background-color: #66CD00; /* 背景颜色 */
+    border: 1px solid #62c102; /* 边框 */
+}
+
+/* 导航条样式 */
+.navigator {
+    width: 100%; /* 宽度 */
+    height: 40px; /* 高度 */
+    background-color: #1874CD; /* 背景颜色 */
+}
+
+/* 导航容器样式 */
+.navigatorBox {
+    width: 980px; /* 宽度 */
+    margin: auto; /* 自动水平居中 */
+}
+
+/* 导航列表样式 */
+.navUl {
+    display: inline-block; /* 行内块元素 */
+    list-style-type: none; /* 无列表样式 */
+    padding: 0; /* 无内边距 */
+    margin-top: 10px; /* 上外边距 */
+}
+
+/* 导航列表项样式 */
+.navLi {
+    float: left; /* 左浮动 */
+    margin-right: 3em; /* 右外边距 */
+    padding: 0; /* 无内边距 */
+}
+
+/* 导航链接样式 */
+.bar {
+    text-decoration: none; /* 无下划线 */
+    color: white; /* 字体颜色 */
+}
+
+/* 基金信息框样式 */
+.fundInfo {
+    margin-top: 30px; /* 上外边距 */
+    width: 980px; /* 宽度 */
+    height: 350px; /* 高度 */
+    display: block; /* 块级元素 */
+    margin-left: auto; /* 左自动边距 */
+    flex-direction: column; /* 垂直排列 */
+    margin-right: auto; /* 右自动边距 */
+    background-color: white; /* 背景颜色 */
+    border: solid; /* 边框 */
+    border-color: #CCCCCC; /* 边框颜色 */
+}
+
+/* 基金名称框样式 */
+.fundNameBox {
+    height: 10%; /* 高度 */
+    padding-top: 20px; /* 上内边距 */
+    padding-bottom: 8px; /* 下内边距 */
+    padding-left: 18px; /* 左内边距 */
+    color: #545454; /* 字体颜色 */
+    font-size: 20px; /* 字体大小 */
+    border-bottom: #CCCCCC 1px solid; /* 下边框 */
+}
+
+/* 基金名称样式 */
+.fundName {
+    display: inline-block; /* 行内块元素 */
+}
+
+/* 安全图标样式 */
+.icon_safe {
+    margin-left: 6px; /* 左外边距 */
+    display: inline-block; /* 行内块元素 */
+    width: 25px; /* 宽度 */
+    height: 25px; /* 高度 */
+    background-image: url(baseIcon.png); /* 背景图 */
+    background-position: -285px -300px; /* 背景图位置 */
+    position: relative; /* 相对定位 */
+    top: 3px; /* 向下偏移 */
+}
+
+/* 基金详细信息框样式 */
+.fundDetailBox {
+    height: 82%; /* 高度 */
+    display: flex; /* 弹性盒布局 */
+}
+
+/* 左侧详细信息框样式 */
+.fundDetailBoxLeft {
+    width: 65%; /* 宽度 */
+    border-right: #CCCCCC 1px solid; /* 右边框 */
+}
+
+/* 右侧详细信息框样式 */
+.fundDetailBoxRight {
+    width: 35%; /* 宽度 */
+}
+
+/* 基金详细信息部分样式 */
+.fundDetail {
+    display: flex; /* 弹性盒布局 */
+    justify-content: space-around; /* 平均分配空间 */
+    padding-top: 20px; /* 上内边距 */
+    width: 100%; /* 宽度 */
+}
+
+/* 信息框样式 */
+.infoBox {
+    text-align: center; /* 文本居中 */
+    display: inline-block; /* 行内块元素 */
+    height: 90px; /* 高度 */
+    margin-right: 30px; /* 右外边距 */
+    padding-left: 30px; /* 左内边距 */
+    width: 100%; /* 宽度 */
+    padding-top: 10px; /* 上内边距 */
+}
+
+/* 信息框标题样式 */
+.infoBoxTitle {
+    /* 可根据需要添加样式 */
+}
+
+/* 信息框内容样式 */
+.infoBoxContent {
+    display: inline-block; /* 行内块元素 */
+    margin-top: 15px; /* 上外边距 */
+    color: #535257; /* 字体颜色 */
+    font-size: 30px; /* 字体大小 */
+    font-weight: bold; /* 字体加粗 */
+}
+
+/* 文本框样式 */
+.textBox {
+    margin-left: 60px; /* 左外边距 */
+}
+
+/* 文本行容器样式 */
+.textLineBox {
+    display: grid; /* 网格布局 */
+    text-align: left; /* 文本左对齐 */
+    grid-template-columns: 22% 30% 22% 28%; /* 列宽度设置 */
+}
+
+/* 文本行样式 */
+.textLine {
+    display: inline-block; /* 行内块元素 */
+    margin-top: 25px; /* 上外边距 */
+    color: #535257; /* 字体颜色 */
+    font-size: 15px; /* 字体大小 */
+}
+
+/* 进度条容器样式 */
+.progressBarBox {
+    display: block; /* 块级元素 */
+}
+
+/* 进度条样式 */
+.progressBar1 {
+    display: inline-block; /* 行内块元素 */
+    margin-left: 50px; /* 左外边距 */
+    width: 60%; /* 宽度 */
+    border-radius: 0%; /* 边角圆度 */
+}
+
+/* 投资输入框样式 */
+.touziInput {
+    margin-top: 15px; /* 上外边距 */
+    background-color: #EEEEEE; /* 背景颜色 */
+    border-radius: 3px; /* 边角圆度 */
+    border: none; /* 无边框 */
+    outline: none; /* 无轮廓 */
+    height: 28px; /* 高度 */
+    width: 85%; /* 宽度 */
+    box-shadow: inset 1px 1px 1px rgba(0, 0, 0, 0.575); /* 内侧阴影效果 */
+}
+
+/* 进度条样式 */
+.progress-bar1::-webkit-progress-value {
+    background-color: red; /* 进度颜色 */
+}
+
+/* 基金详细信息右侧样式 */
+.fundDetailRight {
+    padding-left: 35px; /* 左内边距 */
+    padding-top: 30px; /* 上内边距 */
+}
+
+/* 进度条背景样式 */
+progress[value]::-webkit-progress-bar {
+    background-color: #D2D2D2; /* 背景颜色 */
+    box-shadow: inset 0 4px 4px rgba(255, 255, 255, 0.894); /* 内侧上方白色阴影效果 */
+}
+
+/* 进度条值样式 */
+progress[value]::-webkit-progress-value {
+    background-color: #1874CD; /* 进度颜色 */
+}
+
+/* 百分比样式 */
+.percentage {
+    display: inline-block; /* 行内块元素 */
+    margin-left: 30px; /* 左外边距 */
+    color: #2C7BCD; /* 字体颜色 */
+    font-size: 25px; /* 字体大小 */
+}
+
+/* 投资按钮样式 */
+.touziBtn {
+    display: block; /* 块级元素 */
+    margin-top: 15px; /* 上外边距 */
+    margin-left: 5px; /* 左外边距 */
+    background-color: #1874CD; /* 背景颜色 */
+    border: none; /* 无边框 */
+    height: 35px; /* 高度 */
+    width: 80%; /* 宽度 */
+    color: white; /* 字体颜色 */
+    border-radius: 3px; /* 边角圆度 */
+    font-weight: bold; /* 字体加粗 */
+    cursor: pointer; /* 鼠标指针样式 */
+}
+
+/* 产品信息框样式 */
+.productInfo {
+    margin-top: 10px; /* 上外边距 */
+    width: 980px; /* 宽度 */
+    height: 380px; /* 高度 */
+    display: block; /* 块级元素 */
+    margin-left: auto; /* 左自动边距 */
+    margin-right: auto; /* 右自动边距 */
+    background-color: white; /* 背景颜色 */
+    border: solid; /* 边框 */
+    border-color: #CCCCCC; /* 边框颜色 */
+}
+
+/* 产品信息列表框样式 */
+.productInfoUlBox {
+    border-bottom: #CCCCCC 1px solid; /* 下边框 */
+}
+
+/* 产品信息列表样式 */
+.productInfoUl {
+    display: inline-block; /* 行内块元素 */
+    list-style-type: none; /* 无列表样式 */
+    padding-left: 0; /* 无内边距 */
+    margin-left: 15px; /* 左外边距 */
+    margin-top: 8px; /* 上外边距 */
+    margin-bottom: 5px; /* 下外边距 */
+    cursor: pointer; /* 鼠标指针样式 */
+}
+
+/* 产品信息列表项样式 */
+.productInfoLl {
+    float: left; /* 左浮动 */
+    font-size: 17px; /* 字体大小 */
+    padding-right: 24px; /* 右内边距 */
+}
+
+/* 页脚样式 */
+.footer {
+    justify-content: center; /* 居中对齐 */
+    margin-top: 50px; /* 上外边距 */
+    height: 200px; /* 高度 */
+    background-color: #DDDDDD; /* 背景颜色 */
+}
+
+/* 页脚容器样式 */
+.footerBox {
+    margin: auto; /* 自动水平居中 */
+    height: 200px; /* 高度 */
+    width: 980px; /* 宽度 */
+}
+
+/* 页脚信息框样式 */
+.footerInfoBox {
+    display: inline-block; /* 行内块元素 */
+    margin-top: 30px; /* 上外边距 */
+    height: 150px; /* 高度 */
+    width: 200px; /* 宽度 */
+    border-right: 1px solid #CCCCCC; /* 右边框 */
+    text-align: center; /* 文本居中 */
+    vertical-align: top; /* 顶部对齐 */
+}
+
+/* 页脚框标题样式 */
+.footerBoxTitle {
+    font-size: 18px; /* 字体大小 */
+    padding-bottom: 5px; /* 下内边距 */
+    color: #444444; /* 字体颜色 */
+}
+
+/* 页脚框文本样式 */
+.footerBoxText {
+    font-size: 14px; /* 字体大小 */
+    margin-top: 10px; /* 上外边距 */
+    color: #444444; /* 字体颜色 */
+}
+
+/* 微信图标样式 */
+.icon_weixin {
+    margin-left: 55px; /* 左外边距 */
+    width: 84px; /* 宽度 */
+    height: 23px; /* 高度 */
+    background-image: url(footerIcons.png); /* 背景图 */
+    background-position: -31px -50px; /* 背景图位置 */
+    position: relative; /* 相对定位 */
+    top: 10px; /* 向下偏移 */
+    float: left; /* 左浮动 */
+}
+
+/* 微博图标样式 */
+.icon_weibo {
+    margin-left: 57px; /* 左外边距 */
+    width: 84px; /* 宽度 */
+    height: 27px; /* 高度 */
+    background-image: url(footerIcons.png); /* 背景图 */
+    background-position: -31px -0px; /* 背景图位置 */
+    position: relative; /* 相对定位 */
+    top: 20px; /* 向下偏移 */
+    float: left; /* 左浮动 */
+}
+
+/* 页脚其他信息框样式 */
+.footerOtherInfoBox {
+    display: inline-block; /* 行内块元素 */
+    margin-top: 30px; /* 上外边距 */
+    height: 150px; /* 高度 */
+    width: 360px; /* 宽度 */
+    text-align: left; /* 文本左对齐 */
+    vertical-align: top; /* 顶部对齐 */
+}
+
+/* 页脚其他信息内容样式 */
+.footerOtherInfoContent {
+    height: 150px; /* 高度 */
+    width: 310px; /* 宽度 */
+    margin-left: 20px; /* 左外边距 */
+}
+
+/* 侧边栏样式 */
+.sidebar {
+    position: fixed; /* 固定定位 */
+    right: 0; /* 右边缘对齐 */
+    top: 30%; /* 顶部30% */
+    height: 150px; /* 高度 */
+    width: 50px; /* 宽度 */
+    background-color: #2F2F2F; /* 背景颜色 */
+    float: right; /* 右浮动 */
+}
+
+/* 图标框样式 */
+.icon_box {
+    width: 49px; /* 宽度 */
+    height: 49px; /* 高度 */
+    border-bottom: #444444 1px solid; /* 下边框 */
+}
+
+/* 圆形图标框样式 */
+.icon_circleBox {
+    width: 30px; /* 宽度 */
+    height: 30px; /* 高度 */
+    background-color: #FBFBFB; /* 背景颜色 */
+    margin: auto; /* 自动水平居中 */
+    border-radius: 50%; /* 圆角 */
+    position: relative; /* 相对定位 */
+    top: 10px; /* 向下偏移 */
+    text-align: center; /* 文本居中 */
+    align-items: center; /* 垂直居中 */
+}
+
+/* QQ图标样式 */
+.icon_qq {
+    width: 100%; /* 宽度 */
+    height: 100%; /* 高度 */
+    background-image: url(QQ.png); /* 背景图 */
+    background-size: auto 100%; /* 背景图大小 */
+}
+
+/* 小微博图标样式 */
+.icon_weibo_small {
+    width: 100%; /* 宽度 */
+    height: 100%; /* 高度 */
+    background-image: url(weibo.png); /* 背景图 */
+    background-size: auto 100%; /* 背景图大小 */
+}
+
+/* 向上图标样式 */
+.icon_up {
+    width: 100%; /* 宽度 */
+    height: 100%; /* 高度 */
+    background-image: url(up.png); /* 背景图 */
+    background-repeat: no-repeat; /* 不重复背景图 */
+    background-size: auto 100%; /* 背景图大小 */
+    position: relative; /* 相对定位 */
+}
+
+/* 向上图标链接样式 */
+.icon_up a {
+    display: block; /* 块级元素 */
+    width: 100%; /* 宽度 */
+    height: 100%; /* 高度 */
+}
+
+/* 产品信息内容文本样式 */
+.productInfoContentText {
+    display: none; /* 隐藏元素 */
+}
+
+/* 模态框样式 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px;
+    border-radius: 5px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn-submit {
+    background-color: #1874CD;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-submit:hover {
+    background-color: #1464a0;
+}
+
+/* 已登录用户信息样式 */
+.user-info {
+    display: inline-block;
+    margin-right: 10px;
+    color: #535257;
+    font-size: 14px;
+}

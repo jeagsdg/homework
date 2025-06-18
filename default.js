@@ -6,7 +6,10 @@ let userData = null;
 // 页面加载完成后执行
 document.addEventListener('DOMContentLoaded', function() {
     // 默认显示第一个内容
-    document.querySelectorAll('.productInfoContentText')[0].style.display = 'block';
+    const productInfoContentElements = document.querySelectorAll('.productInfoContentText');
+    if (productInfoContentElements && productInfoContentElements.length > 0) {
+        productInfoContentElements[0].style.display = 'block';
+    }
     
     // 加载产品数据
     loadProductData();
@@ -15,35 +18,53 @@ document.addEventListener('DOMContentLoaded', function() {
     checkLoginStatus();
     
     // 登录按钮点击事件
-    document.getElementById('loginBtn').addEventListener('click', function() {
-        showLoginModal();
-    });
+    const loginBtn = document.getElementById('loginBtn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function() {
+            showLoginModal();
+        });
+    }
     
     // 注册按钮点击事件（暂时重定向到登录）
-    document.getElementById('registerBtn').addEventListener('click', function() {
-        showLoginModal();
-    });
+    const registerBtn = document.getElementById('registerBtn');
+    if (registerBtn) {
+        registerBtn.addEventListener('click', function() {
+            showLoginModal();
+        });
+    }
     
     // 登录表单提交事件
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        login();
-    });
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            login();
+        });
+    }
     
     // 关闭模态框的点击事件
-    document.querySelector('.close').addEventListener('click', function() {
-        hideLoginModal();
-    });
+    const closeBtn = document.querySelector('.close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            hideLoginModal();
+        });
+    }
     
     // 投资按钮点击事件
-    document.getElementById('investBtn').addEventListener('click', function() {
-        invest();
-    });
+    const investBtn = document.getElementById('investBtn');
+    if (investBtn) {
+        investBtn.addEventListener('click', function() {
+            invest();
+        });
+    }
     
     // 投资金额输入框事件 - 计算预期收益
-    document.getElementById('investmentAmount').addEventListener('input', function() {
-        calculateProjectedRevenue();
-    });
+    const investmentAmount = document.getElementById('investmentAmount');
+    if (investmentAmount) {
+        investmentAmount.addEventListener('input', function() {
+            calculateProjectedRevenue();
+        });
+    }
 });
 
 // 显示指定索引的内容
@@ -65,40 +86,90 @@ function loadProductData() {
     xhr.onload = function() {
         if (xhr.status === 200) {
             try {
+                // 检查响应是否包含认证错误
+                if (xhr.responseText.indexOf("authentication method unknown") !== -1) {
+                    console.error('MySQL 8.0认证错误:', xhr.responseText);
+                    alert('MySQL 8.0认证错误，请访问mysql_fix.php页面查看解决方案。');
+                    window.location.href = 'mysql_fix.php';
+                    return;
+                }
+                
+                // 检查响应是否以"连接失败"开头
+                if (xhr.responseText.indexOf("连接失败") === 0 || 
+                    xhr.responseText.indexOf("<") === 0) {
+                    console.error('数据库连接失败:', xhr.responseText);
+                    alert('数据库连接失败，请联系管理员或访问mysql_fix.php页面查看解决方案。');
+                    return;
+                }
+                
                 const response = JSON.parse(xhr.responseText);
+                
+                // 检查是否有错误消息
+                if (response.error) {
+                    console.error('API错误:', response.error, response.message);
+                    if (response.error === 'MySQL 8.0认证错误') {
+                        alert('MySQL 8.0认证错误，请访问mysql_fix.php页面查看解决方案。');
+                        window.location.href = 'mysql_fix.php';
+                    } else {
+                        alert('错误: ' + response.message);
+                    }
+                    return;
+                }
+                
                 currentProduct = response;
                 
+                // --- 安全地更新页面元素 ---
+                // 创建一个辅助函数来检查元素是否存在
+                const updateElementText = (id, text) => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.textContent = text;
+                    }
+                };
+
                 // 更新页面上的产品数据
-                document.getElementById('productName').textContent = response.product_name + ' ' + response.product_code + '期';
-                document.getElementById('annualRate').textContent = response.annual_rate;
-                document.getElementById('investmentPeriod').textContent = response.investment_period;
-                document.getElementById('minInvestment').textContent = response.min_investment;
-                document.getElementById('startDate').textContent = response.start_date;
-                document.getElementById('endDate').textContent = response.end_date;
-                document.getElementById('incrementAmount').textContent = response.increment_amount + '元';
-                document.getElementById('timer').textContent = response.remaining_time;
-                document.getElementById('remaininginvestableAmount').textContent = response.remaining_amount;
+                updateElementText('productName', response.product_name);
+                updateElementText('annualRate', response.annual_rate);
+                updateElementText('investmentPeriod', response.investment_period);
+                updateElementText('minInvestment', response.min_investment);
+                updateElementText('startDate', response.start_date);
+                updateElementText('endDate', response.end_date);
+                updateElementText('incrementAmount', response.increment_amount + '元');
+                updateElementText('timer', response.remaining_time);
+                updateElementText('remaininginvestableAmount', response.remaining_amount);
                 
                 // 更新进度条
                 const progressBar = document.getElementById('progressBar1');
                 const percentage = document.getElementById('percentage');
-                progressBar.value = response.progress;
-                percentage.textContent = response.progress + '%';
+                if (progressBar && percentage) {
+                    progressBar.value = response.progress;
+                    percentage.textContent = response.progress + '%';
+                }
                 
                 // 如果有用户数据，计算预期收益
                 if (userData) {
                     calculateProjectedRevenue();
                 }
             } catch (e) {
-                console.error('解析产品数据失败:', e);
+                console.error('解析产品数据失败:', e, '原始响应:', xhr.responseText);
+                
+                // 检查是否可能是MySQL 8.0认证错误
+                if (xhr.responseText.indexOf("authentication method unknown") !== -1) {
+                    alert('MySQL 8.0认证错误，请访问mysql_fix.php页面查看解决方案。');
+                    window.location.href = 'mysql_fix.php';
+                } else {
+                    alert('加载产品数据失败，请刷新页面重试。');
+                }
             }
         } else {
             console.error('获取产品数据失败');
+            alert('获取产品数据失败，请检查网络连接。');
         }
     };
     
     xhr.onerror = function() {
         console.error('AJAX请求错误');
+        alert('网络连接失败，请检查网络设置。');
     };
     
     xhr.send();
@@ -112,7 +183,26 @@ function checkLoginStatus() {
     xhr.onload = function() {
         if (xhr.status === 200) {
             try {
+                // 检查响应是否包含认证错误
+                if (xhr.responseText.indexOf("authentication method unknown") !== -1) {
+                    console.error('MySQL 8.0认证错误:', xhr.responseText);
+                    return;
+                }
+                
+                // 检查响应是否以HTML或错误信息开头
+                if (xhr.responseText.indexOf("连接失败") === 0 || 
+                    xhr.responseText.indexOf("<") === 0) {
+                    console.error('数据库连接失败:', xhr.responseText);
+                    return;
+                }
+                
                 const response = JSON.parse(xhr.responseText);
+                
+                // 检查是否有错误消息
+                if (response.error) {
+                    console.error('API错误:', response.error, response.message);
+                    return;
+                }
                 
                 if (response.success) {
                     // 用户已登录
@@ -127,7 +217,7 @@ function checkLoginStatus() {
                     userData = null;
                 }
             } catch (e) {
-                console.error('解析用户数据失败:', e);
+                console.error('解析用户数据失败:', e, '原始响应:', xhr.responseText);
             }
         } else {
             console.error('获取用户数据失败');
@@ -145,20 +235,23 @@ function checkLoginStatus() {
 function updateUIForLoggedInUser() {
     if (!userData) return;
     
+    // 辅助函数：安全地更新元素内容
+    const updateElementText = (id, text) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = text;
+        }
+    };
+    
     // 更新账户余额
-    document.getElementById('accountbalance').textContent = userData.balance;
+    updateElementText('accountbalance', userData.balance);
     
     // 更新用户控制区域
     const userControls = document.getElementById('userControls');
-    userControls.innerHTML = `
-        <div class="user-info">欢迎, ${userData.username}</div>
-        <button class="login" id="logoutBtn">注销</button>
-    `;
-    
-    // 添加注销按钮点击事件
-    document.getElementById('logoutBtn').addEventListener('click', function() {
-        logout();
-    });
+    if (userControls) {
+        // 如果已经有HTML内容，说明服务器端已经渲染了登录状态
+        // 不需要再次更新
+    }
     
     // 计算预期收益
     calculateProjectedRevenue();
@@ -240,26 +333,43 @@ function logout() {
                     isLoggedIn = false;
                     userData = null;
                     
+                    // 辅助函数：安全地更新元素内容
+                    const updateElementText = (id, text) => {
+                        const element = document.getElementById(id);
+                        if (element) {
+                            element.textContent = text;
+                        }
+                    };
+                    
                     // 更新UI
-                    document.getElementById('userControls').innerHTML = `
-                        <button class="login" id="loginBtn">登录</button>
-                        <button class="register" id="registerBtn">注册</button>
-                    `;
-                    
-                    // 重新添加登录和注册按钮的事件监听
-                    document.getElementById('loginBtn').addEventListener('click', function() {
-                        showLoginModal();
-                    });
-                    
-                    document.getElementById('registerBtn').addEventListener('click', function() {
-                        showLoginModal();
-                    });
+                    const userControls = document.getElementById('userControls');
+                    if (userControls) {
+                        userControls.innerHTML = `
+                            <button class="login" id="loginBtn">登录</button>
+                            <button class="register" id="registerBtn">注册</button>
+                        `;
+                        
+                        // 重新添加登录和注册按钮的事件监听
+                        const loginBtn = document.getElementById('loginBtn');
+                        if (loginBtn) {
+                            loginBtn.addEventListener('click', function() {
+                                showLoginModal();
+                            });
+                        }
+                        
+                        const registerBtn = document.getElementById('registerBtn');
+                        if (registerBtn) {
+                            registerBtn.addEventListener('click', function() {
+                                showLoginModal();
+                            });
+                        }
+                    }
                     
                     // 更新账户余额显示
-                    document.getElementById('accountbalance').textContent = '请登录查看';
+                    updateElementText('accountbalance', '请登录查看');
                     
                     // 清空预计收益
-                    document.getElementById('projectedrevenue').textContent = '0.0';
+                    updateElementText('projectedrevenue', '0.0');
                     
                     alert('您已成功注销');
                 }
@@ -280,22 +390,45 @@ function logout() {
 
 // 计算预期收益
 function calculateProjectedRevenue() {
-    if (!currentProduct) return;
-    
+    // 获取投资金额输入框
     const investmentAmountInput = document.getElementById('investmentAmount');
-    const amount = parseFloat(investmentAmountInput.value);
+    if (!investmentAmountInput) return;
     
-    if (isNaN(amount) || amount <= 0) {
-        document.getElementById('projectedrevenue').textContent = '0.0';
+    // 获取投资金额
+    const investmentAmount = parseFloat(investmentAmountInput.value);
+    if (isNaN(investmentAmount) || investmentAmount <= 0) {
+        // 如果投资金额无效，则将预期收益设为0
+        const projectedRevenueElement = document.getElementById('projectedrevenue');
+        if (projectedRevenueElement) {
+            projectedRevenueElement.textContent = '0.00';
+        }
         return;
     }
     
-    // 计算预期收益
-    const dailyRate = currentProduct.annual_rate / 100 / 365;
-    const projectedRevenue = (dailyRate * currentProduct.investment_period * amount).toFixed(2);
+    // 确保currentProduct存在
+    if (!currentProduct) {
+        console.error('无法计算预期收益: currentProduct 未定义');
+        return;
+    }
     
-    // 更新预期收益显示
-    document.getElementById('projectedrevenue').textContent = projectedRevenue;
+    try {
+        // 获取年化利率
+        const annualRate = parseFloat(currentProduct.annual_rate) || 3.07;
+        
+        // 获取投资期限（天数）
+        const investmentPeriod = parseInt(currentProduct.investment_period) || 90;
+        
+        // 计算预期收益：投资金额 * 年化利率 / 365 * 投资期限
+        const projectedRevenue = (investmentAmount * (annualRate / 100) * investmentPeriod / 365).toFixed(2);
+        
+        // 更新预期收益显示
+        const projectedRevenueElement = document.getElementById('projectedrevenue');
+        if (projectedRevenueElement) {
+            projectedRevenueElement.textContent = projectedRevenue;
+        }
+    } catch (e) {
+        console.error('计算预期收益时出错:', e);
+    }
 }
 
 // 投资函数
@@ -403,8 +536,10 @@ function updateProgressBar(product) {
     const percentage = document.getElementById('percentage');
     
     // 更新进度条值
-    progressBar.value = progress;
-    percentage.textContent = progress + '%';
+    if (progressBar && percentage) {
+        progressBar.value = progress;
+        percentage.textContent = progress + '%';
+    }
 }
 
 // 倒计时函数（保留原有功能）
@@ -464,8 +599,9 @@ function countdown() {
 
 // 页面加载时启动倒计时
 window.onload = function() {
-    // 如果定时器显示的是默认值，才启动倒计时
-    if (document.getElementById('timer').textContent === '7天7时12分31秒') {
+    // 检查timer元素是否存在
+    const timerElement = document.getElementById('timer');
+    if (timerElement && timerElement.textContent === '7天7时12分31秒') {
         countdown();
     }
 };

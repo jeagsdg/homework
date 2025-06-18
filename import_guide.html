@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>数据库导入指南</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .step {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
+        img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow: auto;
+        }
+        .note {
+            background-color: #fffbde;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <h1>如何导入数据库SQL文件</h1>
+    <p>本指南将帮助您使用phpStudy导入SQL文件，为您的应用程序初始化数据库。</p>
+
+    <div class="step">
+        <h2>第1步：打开phpStudy控制面板</h2>
+        <p>首先启动您的phpStudy软件，并确保MySQL服务已经启动。</p>
+    </div>
+
+    <div class="step">
+        <h2>第2步：打开phpMyAdmin</h2>
+        <p>在phpStudy控制面板中，点击"MySQL管理器"，然后点击"打开phpMyAdmin"。</p>
+    </div>
+
+    <div class="step">
+        <h2>第3步：使用phpMyAdmin导入SQL文件</h2>
+        <ol>
+            <li>在phpMyAdmin左侧菜单中，选择已有的 <strong>financial_products</strong> 数据库，或者创建一个新的。</li>
+            <li>点击顶部的"导入"选项卡。</li>
+            <li>点击"选择文件"按钮，找到并选择<strong>db_direct_import.sql</strong>文件。</li>
+            <li>确保选择了正确的字符集（通常是UTF-8）。</li>
+            <li>点击页面底部的"执行"按钮。</li>
+        </ol>
+    </div>
+
+    <div class="step">
+        <h2>第4步：验证导入结果</h2>
+        <p>导入完成后，您应该看到一个成功的提示消息。可以通过以下方式验证导入是否成功：</p>
+        <ol>
+            <li>点击左侧菜单中的数据库名称</li>
+            <li>查看是否有以下表格：
+                <ul>
+                    <li>users</li>
+                    <li>products</li>
+                    <li>announcements</li>
+                    <li>product_types</li>
+                    <li>investments</li>
+                </ul>
+            </li>
+            <li>点击每个表，检查是否有数据</li>
+        </ol>
+    </div>
+
+    <div class="step">
+        <h2>第5步：刷新应用程序页面</h2>
+        <p>完成数据库导入后，返回应用程序页面并刷新。您现在应该能够看到产品和公告数据了。</p>
+    </div>
+
+    <div class="note">
+        <strong>注意：</strong> 如果导入过程中出现错误，请检查错误消息，确保已选择正确的数据库，且该用户拥有导入权限。如果导入时报告表已经存在，可以尝试删除现有的表后再重新导入。
+    </div>
+
+    <div class="note">
+        <strong>测试账号信息：</strong>
+        <ul>
+            <li>用户名: testqq</li>
+            <li>密码: 123456</li>
+        </ul>
+    </div>
+
+    <p><a href="index.php">返回应用程序</a></p>
+</body>
+</html> 

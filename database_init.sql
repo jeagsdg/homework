@@ -108,12 +108,12 @@ CREATE TABLE IF NOT EXISTS announcements (
 );
 
 -- 插入测试用户，密码为123456
-INSERT INTO users (username, password, balance) VALUES
+INSERT IGNORE INTO users (username, password, balance) VALUES
 ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 100000.00),
 ('test', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 50000.00);
 
 -- 插入示例银行数据
-INSERT INTO banks (bank_name, bank_code) VALUES
+INSERT IGNORE INTO banks (bank_name, bank_code) VALUES
 ('中国工商银行', 'ICBC'),
 ('中国建设银行', 'CCB'),
 ('中国农业银行', 'ABC'),
@@ -126,7 +126,7 @@ INSERT INTO banks (bank_name, bank_code) VALUES
 ('广发银行', 'CGB');
 
 -- 插入产品类型数据
-INSERT INTO product_types (type_name, type_code) VALUES
+INSERT IGNORE INTO product_types (type_name, type_code) VALUES
 ('固定收益类', 'FIXED'),
 ('浮动收益类', 'FLOAT'),
 ('净值型产品', 'NET'),
@@ -134,7 +134,7 @@ INSERT INTO product_types (type_name, type_code) VALUES
 ('货币市场类', 'MONEY');
 
 -- 插入风险等级数据
-INSERT INTO risk_levels (level_name, level_code, description) VALUES
+INSERT IGNORE INTO risk_levels (level_name, level_code, description) VALUES
 ('谨慎型', 'R1', '风险极低，适合极度厌恶风险的投资者'),
 ('稳健型', 'R2', '风险较低，适合对风险较为敏感的投资者'),
 ('平衡型', 'R3', '风险中等，适合风险偏好中等的投资者'),
@@ -142,7 +142,7 @@ INSERT INTO risk_levels (level_name, level_code, description) VALUES
 ('激进型', 'R5', '风险高，适合能够承担高风险的投资者');
 
 -- 插入示例银行理财产品数据
-INSERT INTO bank_financing_products (product_code, product_name, bank_id, product_type_id, risk_level_id, annual_rate, min_annual_rate, max_annual_rate, investment_period, min_investment, max_investment, increment_amount, total_amount, remaining_amount, start_date, end_date, sale_start_date, sale_end_date, product_status, is_featured) VALUES
+INSERT IGNORE INTO bank_financing_products (product_code, product_name, bank_id, product_type_id, risk_level_id, annual_rate, min_annual_rate, max_annual_rate, investment_period, min_investment, max_investment, increment_amount, total_amount, remaining_amount, start_date, end_date, sale_start_date, sale_end_date, product_status, is_featured) VALUES
 ('GS2023001', '工银财富升级版2023第1期', 1, 1, 2, 3.85, 3.50, 4.10, 180, 50000.00, 5000000.00, 1000.00, 10000000.00, 3500000.00, '2023-06-01', '2023-11-28', '2023-05-15', '2023-05-30', '已结束', 1),
 ('CCB20230621', '乾元-安鑫（按日）开放式净值型产品', 2, 3, 2, 3.65, 3.30, 3.90, 90, 10000.00, NULL, 1000.00, 50000000.00, 12000000.00, '2023-06-25', '2023-09-23', '2023-06-10', '2023-06-24', '已结束', 0),
 ('ABC-ANXIN-2307', '农银安鑫90天人民币理财产品', 3, 1, 1, 3.35, 3.10, 3.50, 90, 5000.00, NULL, 1000.00, 100000000.00, 42000000.00, '2023-07-10', '2023-10-08', '2023-07-01', '2023-07-08', '已结束', 0),
@@ -150,11 +150,11 @@ INSERT INTO bank_financing_products (product_code, product_name, bank_id, produc
 ('BOCOM-PJT-2310', '蕴通财富稳得利', 5, 1, 2, 3.55, 3.30, 3.70, 180, 50000.00, 3000000.00, 10000.00, 30000000.00, 15000000.00, '2023-10-20', '2024-04-18', '2023-10-08', '2023-10-18', '募集中', 0);
 
 -- 插入示例产品数据
-INSERT INTO products (product_code, product_name, annual_rate, investment_period, min_investment, increment_amount, start_date, end_date, total_amount, remaining_amount, deadline, is_active) VALUES
+INSERT IGNORE INTO products (product_code, product_name, annual_rate, investment_period, min_investment, increment_amount, start_date, end_date, total_amount, remaining_amount, deadline, is_active) VALUES
 ('200110', '安富 200110期', 3.07, 90, 10000.00, 1000.00, '2020-03-25', '2020-06-25', 1000000.00, 300000.00, '2020-03-20 23:59:59', 1);
 
 -- 插入示例公告数据（截取部分）
-INSERT INTO announcements (title, content, publish_date, year, reference_code) VALUES
+INSERT IGNORE INTO announcements (title, content, publish_date, year, reference_code) VALUES
 ('中信理财之双鑫港债净值型理财产品（理财代码：A2044A5671）成立公告', '本公告为该理财产品的成立公告，包含产品基本信息、风险提示等内容...', '2021-04-06', 2021, 'A2044A5671'),
 ('华澳理财之双鑫港债净值型理财产品（理财代码：A204A5670）成立公告', '本公告为该理财产品的成立公告，包含产品基本信息、风险提示等内容...', '2021-03-09', 2021, 'A204A5670'),
 ('中信理财之双鑫港债净值型理财产品（理财代码：A204A5669）成立公告', '本公告为该理财产品的成立公告，包含产品基本信息、风险提示等内容...', '2021-01-13', 2021, 'A204A5669'),

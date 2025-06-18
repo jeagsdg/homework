@@ -166,11 +166,6 @@ body {
     padding-top: 10px; /* 上内边距 */
 }
 
-/* 信息框标题样式 */
-.infoBoxTitle {
-    /* 可根据需要添加样式 */
-}
-
 /* 信息框内容样式 */
 .infoBoxContent {
     display: inline-block; /* 行内块元素 */

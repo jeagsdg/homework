@@ -139,6 +139,8 @@ require_once 'check_login.php';
         <input type="text" id="searchInput" placeholder="请输入产品代码">
         
         <button class="search-btn" id="searchBtn">查询</button>
+        
+        <a href="update_database.php" class="search-btn" style="text-decoration: none; display: inline-block; margin-left: 10px;">更新数据</a>
     </div>
 
     <table class="products-table">
@@ -288,13 +290,32 @@ require_once 'check_login.php';
             if (productCode) url += `product_code=${productCode}&`;
             if (searchText) url += `search_text=${searchText}&`;
             
+            // 添加调试信息
+            console.log("加载理财产品数据，API URL: ", url);
+            
             fetch(url)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP 错误：${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    console.log("API 原始响应: ", text);
+                    try {
+                        return JSON.parse(text);
+                    } catch(e) {
+                        console.error("JSON解析错误:", e);
+                        throw new Error("返回数据不是有效的JSON格式");
+                    }
+                })
                 .then(data => {
                     const productsTableBody = document.getElementById('productsTableBody');
                     productsTableBody.innerHTML = '';
                     
-                    if (data.data.length === 0) {
+                    console.log("解析后的数据:", data);
+                    
+                    if (!data || !data.data || data.data.length === 0) {
                         productsTableBody.innerHTML = '<tr><td colspan="12" style="text-align: center;">没有找到匹配的产品</td></tr>';
                         return;
                     }
@@ -304,17 +325,17 @@ require_once 'check_login.php';
                         
                         // 添加产品数据到行
                         row.innerHTML = `
-                            <td>${product.序号}</td>
-                            <td>${product.产品代码}</td>
-                            <td>${product.产品名称}</td>
-                            <td>${product.产品类别}</td>
-                            <td>${product.发行方}</td>
-                            <td>${product.存续方式}</td>
-                            <td>${product.销售区域}</td>
-                            <td>${product.风险等级}</td>
-                            <td>${product.产品状态}</td>
-                            <td>${product.产品净值}</td>
-                            <td>${product.最新净值日期}</td>
+                            <td>${product.序号 || product.id || ''}</td>
+                            <td>${product.产品代码 || product.product_code || ''}</td>
+                            <td>${product.产品名称 || product.product_name || ''}</td>
+                            <td>${product.产品类别 || product.product_type || ''}</td>
+                            <td>${product.发行方 || '金融银行'}</td>
+                            <td>${product.存续方式 || '非存续'}</td>
+                            <td>${product.销售区域 || '全国'}</td>
+                            <td>${product.风险等级 || '低风险'}</td>
+                            <td>${product.产品状态 || '在售'}</td>
+                            <td>${product.产品净值 || '1.0000'}</td>
+                            <td>${product.最新净值日期 || product.起息日期 || product.start_date || ''}</td>
                             <td>
                                 <button class="consult-btn">咨询</button>
                                 <a href="#" class="branch-btn">浏览业务网点</a>
@@ -324,7 +345,21 @@ require_once 'check_login.php';
                         productsTableBody.appendChild(row);
                     });
                 })
-                .catch(error => console.error('获取理财产品失败:', error));
+                .catch(error => {
+                    console.error('获取理财产品失败:', error);
+                    const productsTableBody = document.getElementById('productsTableBody');
+                    productsTableBody.innerHTML = '<tr><td colspan="12" style="text-align: center; color: red;">加载产品数据失败: ' + error.message + '</td></tr>';
+                    
+                    // 如果失败，可以尝试重新初始化数据库
+                    const shouldReinitialize = confirm(
+                        "加载产品数据失败。可能是数据库未正确初始化。\n" +
+                        "是否要尝试初始化数据库？"
+                    );
+                    
+                    if (shouldReinitialize) {
+                        window.location.href = 'db_initialize.php';
+                    }
+                });
         }
     </script>
 </body>

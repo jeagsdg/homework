@@ -37,10 +37,19 @@ function getCurrentUsername() {
 function getUserControlsHTML() {
     if (isUserLoggedIn()) {
         $username = getCurrentUsername();
+        $adminLinks = '';
+        
+        // 对所有用户显示数据库操作链接（调试模式下）
+        $adminLinks = '
+            <a href="db_initialize.php" style="color: #e44; font-weight: bold; margin-left: 10px; text-decoration: none;">初始化数据库</a>
+            <a href="check_database.php" style="color: #44e; font-weight: bold; margin-left: 10px; text-decoration: none;">检查数据库</a>
+        ';
+            
         return '
             <div class="Btn" id="userControls">
                 <span style="color: #fff; margin-right: 10px;">您好, ' . htmlspecialchars($username) . '</span>
                 <button class="login" onclick="window.location.href=\'logout_process.php\'">退出登录</button>
+                ' . $adminLinks . '
             </div>
         ';
     } else {
@@ -48,6 +57,8 @@ function getUserControlsHTML() {
             <div class="Btn" id="userControls">
                 <button class="login" id="loginBtn">登录</button>
                 <button class="register" id="registerBtn">注册</button>
+                <a href="db_initialize.php" style="color: #e44; font-weight: bold; margin-left: 10px; text-decoration: none;">初始化数据库</a>
+                <a href="check_database.php" style="color: #44e; font-weight: bold; margin-left: 10px; text-decoration: none;">检查数据库</a>
             </div>
         ';
     }

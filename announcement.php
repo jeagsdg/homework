@@ -154,10 +154,6 @@ require_once 'check_login.php';
             <!-- 年份将通过JavaScript动态加载 -->
         </div>
         
-        <!-- 照片上传选项 -->
-        <div class="photo-upload">
-            可使用相片拍照选项
-        </div>
         
         <!-- 公告列表 -->
         <table class="announcement-list" id="announcementList">
@@ -165,13 +161,6 @@ require_once 'check_login.php';
                 <!-- 公告数据将通过JavaScript动态加载 -->
             </tbody>
         </table>
-        
-        <!-- 示例用的红色框说明 -->
-        <div class="note-container">
-            <span class="note-red">红色框的内容为数据库中取出来</span>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <span>根据页面内容创建</span>
-        </div>
         
         <!-- 分页 -->
         <div class="pagination">
@@ -241,14 +230,11 @@ require_once 'check_login.php';
     <script src="default.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 获取当前年份（默认显示）
-            let currentYear = new URLSearchParams(window.location.search).get('year') || new Date().getFullYear();
+            // 从URL获取年份参数，如果没有则暂时设为null（稍后会从API获取可用年份）
+            let currentYear = new URLSearchParams(window.location.search).get('year');
             
             // 加载年份导航
             loadYearNavigation(currentYear);
-            
-            // 加载当前年份的公告
-            loadAnnouncements(currentYear);
             
             // 登录按钮事件处理
             if (document.getElementById('loginBtn')) {
@@ -280,12 +266,41 @@ require_once 'check_login.php';
         });
         
         // 加载年份导航
-        function loadYearNavigation(currentYear) {
+        function loadYearNavigation(requestedYear) {
+            console.log("加载年份导航，请求年份:", requestedYear);
+            
             fetch('get_announcement_years.php')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP 错误：${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    console.log("年份API原始响应:", text);
+                    try {
+                        return JSON.parse(text);
+                    } catch(e) {
+                        console.error("年份JSON解析错误:", e);
+                        throw new Error("返回的年份数据不是有效的JSON格式");
+                    }
+                })
                 .then(years => {
+                    console.log("解析后的年份数据:", years);
                     const yearNav = document.getElementById('yearNav');
                     yearNav.innerHTML = '';
+                    
+                    if (!years || years.length === 0) {
+                        yearNav.innerHTML = '<span style="color: gray;">暂无年份数据</span>';
+                        // 使用默认年份
+                        years = [2024, 2023, 2022]; // 使用固定年份作为备用
+                    }
+                    
+                    // 如果没有指定年份或指定的年份不在可用年份列表中，使用最新年份
+                    let currentYear = requestedYear;
+                    if (!currentYear || !years.includes(parseInt(currentYear))) {
+                        currentYear = years[0]; // 使用第一个（最新）年份
+                    }
                     
                     years.forEach(year => {
                         const yearLink = document.createElement('a');
@@ -299,21 +314,46 @@ require_once 'check_login.php';
                         
                         yearNav.appendChild(yearLink);
                     });
+                    
+                    // 无论如何都要加载公告数据
+                    loadAnnouncements(currentYear);
                 })
                 .catch(error => {
                     console.error('获取年份列表失败:', error);
+                    const yearNav = document.getElementById('yearNav');
+                    yearNav.innerHTML = '<span style="color: red;">加载年份数据失败: ' + error.message + '</span>';
+                    
+                    // 尽管年份数据加载失败，仍然尝试加载2024年的公告数据
+                    loadAnnouncements(2024);
                 });
         }
         
         // 加载公告
         function loadAnnouncements(year) {
+            console.log("加载公告数据，年份:", year);
+            
             fetch(`get_announcements.php?year=${year}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP 错误：${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    console.log("公告API原始响应:", text);
+                    try {
+                        return JSON.parse(text);
+                    } catch(e) {
+                        console.error("公告JSON解析错误:", e);
+                        throw new Error("返回的公告数据不是有效的JSON格式");
+                    }
+                })
                 .then(data => {
+                    console.log("解析后的公告数据:", data);
                     const announcementList = document.getElementById('announcementList');
                     announcementList.innerHTML = '';
                     
-                    if (data.data.length === 0) {
+                    if (!data || !data.data || data.data.length === 0) {
                         announcementList.innerHTML = '<tr><td colspan="2" style="text-align: center; padding: 20px;">该年份暂无公告</td></tr>';
                         return;
                     }
@@ -343,6 +383,15 @@ require_once 'check_login.php';
                 })
                 .catch(error => {
                     console.error('获取公告列表失败:', error);
+                    const announcementList = document.getElementById('announcementList');
+                    announcementList.innerHTML = `
+                        <tr>
+                            <td colspan="2" style="text-align: center; padding: 20px; color: red;">
+                                加载公告列表失败: ${error.message}
+                                <p>可能是数据库未初始化，<a href="db_initialize.php">点击这里</a>初始化数据库</p>
+                            </td>
+                        </tr>
+                    `;
                 });
         }
     </script>
